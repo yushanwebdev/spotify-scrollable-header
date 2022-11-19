@@ -1,17 +1,42 @@
 import * as React from "react";
 import { Text, StyleSheet, View } from "react-native";
 import Constants from "expo-constants";
-import { MIN_HEADER_HEIGHT } from "./Model";
+import { HEADER_DELTA, MIN_HEADER_HEIGHT } from "./Model";
+import Animated, {
+  Extrapolate,
+  interpolate,
+  SharedValue,
+  useAnimatedStyle,
+} from "react-native-reanimated";
 
 interface HeaderProps {
   artist: string;
+  scrollOffset: SharedValue<number>;
 }
 
-export default ({ artist }: HeaderProps) => (
-  <View style={styles.container}>
-    <Text style={styles.title}>{artist}</Text>
-  </View>
-);
+export default ({ artist, scrollOffset }: HeaderProps) => {
+  const animatedHeaderStyles = useAnimatedStyle(() => {
+    console.warn("scrollOffset.value", scrollOffset.value);
+    console.warn("HEADER_DELTA", HEADER_DELTA);
+
+    return {
+      opacity: interpolate(
+        scrollOffset.value,
+        [HEADER_DELTA - 20, HEADER_DELTA],
+        [0, 1],
+        {
+          extrapolateLeft: Extrapolate.CLAMP,
+        }
+      ),
+    };
+  });
+
+  return (
+    <Animated.View style={[styles.container, animatedHeaderStyles]}>
+      <Text style={styles.title}>{artist}</Text>
+    </Animated.View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
