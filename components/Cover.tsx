@@ -1,21 +1,62 @@
 import * as React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { Album, MAX_HEADER_HEIGHT } from "./Model";
+import Animated, {
+  Extrapolate,
+  interpolate,
+  SharedValue,
+  useAnimatedStyle,
+} from "react-native-reanimated";
+import { Album, HEADER_DELTA, MAX_HEADER_HEIGHT } from "./Model";
 
 interface CoverProps {
   album: Album;
+  scrollOffset: SharedValue<number>;
 }
 
-export default ({ album: { cover } }: CoverProps) => {
-  const scale: any = 1;
-  const opacity = 0.2;
+export default ({ album: { cover }, scrollOffset }: CoverProps) => {
+  const animatedViewStyles = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          scale: interpolate(
+            scrollOffset.value,
+            [-MAX_HEADER_HEIGHT, 0],
+            [4, 1],
+            {
+              extrapolateRight: Extrapolate.CLAMP,
+            }
+          ),
+        },
+      ],
+    };
+  });
+
+  const animatedBlackBgStyles = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(
+        scrollOffset.value,
+        [-64, 0, HEADER_DELTA],
+        [0, 0.2, 1],
+        {
+          extrapolateLeft: Extrapolate.CLAMP,
+        }
+      ),
+    };
+  });
+
   return (
-    <View style={[styles.container, { transform: [{ scale }] }]}>
+    <Animated.View style={[styles.container, animatedViewStyles]}>
       <Image style={styles.image} source={cover} />
-      <View
-        style={{ ...StyleSheet.absoluteFillObject, backgroundColor: "black", opacity }}
+      <Animated.View
+        style={[
+          {
+            ...StyleSheet.absoluteFillObject,
+            backgroundColor: "black",
+          },
+          animatedBlackBgStyles,
+        ]}
       />
-    </View>
+    </Animated.View>
   );
 };
 
