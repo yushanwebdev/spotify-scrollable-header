@@ -19,7 +19,10 @@ const album: AlbumModel = {
     { name: "Dark Noise" },
     { name: "Drift", artist: "Jan Blomqvist, Aparde" },
     { name: "Same Mistake" },
-    { name: "Dancing People Are Never Wrong", artist: "Jan Blomqvist, The Bianca Story" },
+    {
+      name: "Dancing People Are Never Wrong",
+      artist: "Jan Blomqvist, The Bianca Story",
+    },
     { name: "Back in the Taxi" },
     { name: "Ghosttrack" },
     { name: "Just OK" },
