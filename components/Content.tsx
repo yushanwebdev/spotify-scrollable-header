@@ -5,8 +5,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Album, MAX_HEADER_HEIGHT } from "./Model";
 import Track from "./Track";
 import Animated, {
+  Extrapolate,
+  interpolate,
   SharedValue,
   useAnimatedScrollHandler,
+  useAnimatedStyle,
 } from "react-native-reanimated";
 
 interface ContentProps {
@@ -23,6 +26,32 @@ export default ({ album: { artist, tracks }, scrollOffset }: ContentProps) => {
     },
   });
 
+  const animatedLinearGradientStyles = useAnimatedStyle(() => {
+    return {
+      height: interpolate(
+        scrollOffset.value,
+        [-MAX_HEADER_HEIGHT, 0],
+        [0, MAX_HEADER_HEIGHT],
+        {
+          extrapolateLeft: Extrapolate.CLAMP,
+        }
+      ),
+    };
+  });
+
+  const animatedArtistNameStyles = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(
+        scrollOffset.value,
+        [-MAX_HEADER_HEIGHT / 2, 0, MAX_HEADER_HEIGHT / 2],
+        [0, 1, 0],
+        {
+          extrapolateLeft: Extrapolate.CLAMP,
+        }
+      ),
+    };
+  });
+
   return (
     <Animated.ScrollView
       onScroll={scrollHandler}
@@ -31,16 +60,18 @@ export default ({ album: { artist, tracks }, scrollOffset }: ContentProps) => {
       scrollEventThrottle={1}
     >
       <View style={styles.header}>
-        <View style={[styles.gradient, { height }]}>
+        <Animated.View style={[styles.gradient, animatedLinearGradientStyles]}>
           <LinearGradient
             style={StyleSheet.absoluteFill}
             start={[0, 0.3]}
             end={[0, 1]}
             colors={["transparent", "rgba(0, 0, 0, 0.2)", "black"]}
           />
-        </View>
+        </Animated.View>
         <View style={styles.artistContainer}>
-          <Text style={styles.artist}>{artist}</Text>
+          <Animated.Text style={[styles.artist, animatedArtistNameStyles]}>
+            {artist}
+          </Animated.Text>
         </View>
       </View>
       <View style={styles.tracks}>
