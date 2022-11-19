@@ -6,10 +6,7 @@ import Header from "./Header";
 import Content from "./Content";
 import Cover from "./Cover";
 import ShufflePlay, { BUTTON_HEIGHT } from "./ShufflePlay";
-import {
-  useAnimatedScrollHandler,
-  useSharedValue,
-} from "react-native-reanimated";
+import { useSharedValue } from "react-native-reanimated";
 
 interface AlbumProps {
   album: Album;

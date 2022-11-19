@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text, StyleSheet, View } from "react-native";
 import Constants from "expo-constants";
-import { MIN_HEADER_HEIGHT, HEADER_DELTA } from "./Model";
+import { MIN_HEADER_HEIGHT } from "./Model";
 
 interface HeaderProps {
   artist: string;
