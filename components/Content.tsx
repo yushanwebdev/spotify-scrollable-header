@@ -18,8 +18,6 @@ interface ContentProps {
 }
 
 export default ({ album: { artist, tracks }, scrollOffset }: ContentProps) => {
-  const height = MAX_HEADER_HEIGHT;
-
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
       scrollOffset.value = event.contentOffset.y;
@@ -31,10 +29,7 @@ export default ({ album: { artist, tracks }, scrollOffset }: ContentProps) => {
       height: interpolate(
         scrollOffset.value,
         [-MAX_HEADER_HEIGHT, 0],
-        [0, MAX_HEADER_HEIGHT],
-        {
-          extrapolateLeft: Extrapolate.CLAMP,
-        }
+        [0, MAX_HEADER_HEIGHT]
       ),
     };
   });
@@ -44,10 +39,7 @@ export default ({ album: { artist, tracks }, scrollOffset }: ContentProps) => {
       opacity: interpolate(
         scrollOffset.value,
         [-MAX_HEADER_HEIGHT / 2, 0, MAX_HEADER_HEIGHT / 2],
-        [0, 1, 0],
-        {
-          extrapolateLeft: Extrapolate.CLAMP,
-        }
+        [0, 1, 0]
       ),
     };
   });

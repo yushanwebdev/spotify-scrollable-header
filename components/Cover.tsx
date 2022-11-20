@@ -36,10 +36,7 @@ export default ({ album: { cover }, scrollOffset }: CoverProps) => {
       opacity: interpolate(
         scrollOffset.value,
         [-64, 0, HEADER_DELTA],
-        [0, 0.2, 1],
-        {
-          extrapolateLeft: Extrapolate.CLAMP,
-        }
+        [0, 0.2, 1]
       ),
     };
   });

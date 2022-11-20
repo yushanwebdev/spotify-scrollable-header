@@ -16,17 +16,11 @@ interface HeaderProps {
 
 export default ({ artist, scrollOffset }: HeaderProps) => {
   const animatedHeaderStyles = useAnimatedStyle(() => {
-    console.warn("scrollOffset.value", scrollOffset.value);
-    console.warn("HEADER_DELTA", HEADER_DELTA);
-
     return {
       opacity: interpolate(
         scrollOffset.value,
         [HEADER_DELTA - 20, HEADER_DELTA],
-        [0, 1],
-        {
-          extrapolateLeft: Extrapolate.CLAMP,
-        }
+        [0, 1]
       ),
     };
   });
